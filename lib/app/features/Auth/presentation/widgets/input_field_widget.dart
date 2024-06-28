@@ -13,6 +13,7 @@ class InputFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+        textAlign: TextAlign.right,
         decoration: icon == null
             ? InputDecoration(hintText: hintText)
             : InputDecoration(hintText: hintText, prefixIcon: Icon(icon)));

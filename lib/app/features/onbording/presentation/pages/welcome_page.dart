@@ -15,7 +15,7 @@ class WelcomePage extends StatelessWidget {
         //background
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/intro.png"),
+            image: AssetImage("assets/images/introp2.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -23,15 +23,16 @@ class WelcomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             const Text(
-              'welcome to my shop',
+              'مرحبا بكم في متجر ركن',
               style: TextStyle(fontSize: 24, color: Colors.white),
             ),
             const SizedBox(
               height: 10,
             ),
             const Text(
-              'the home of fashion',
-              style: TextStyle(fontSize: 18, color: Colors.white),
+              'متجر متوافر لكل شخص',
+              style: TextStyle(
+                  fontSize: 18, color: Color.fromARGB(255, 0, 183, 255)),
             ),
             const SizedBox(
               height: 10,
@@ -42,7 +43,7 @@ class WelcomePage extends StatelessWidget {
               onTap: () {
                 context.go('/Onbording');
               },
-              text: 'Get Started',
+              text: 'ابدا الان',
             ),
             const SizedBox(
               height: 120,

@@ -24,17 +24,17 @@ class LoginPage extends StatelessWidget {
                       onTap: () {
                         context.go('/ForgetPassword');
                       },
-                      child: const Text('Forget Password?'))),
+                      child: const Text('نسيت كلمة المرور?'))),
               const SizedBox(
                 height: 40,
               ),
               AuthButton(
                 onTap: () {},
-                text: 'LOG IN',
+                text: 'سجل الدخول',
               ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Text('Or login with'),
+                child: Text('او قم بانشاء حساب عبر'),
               ),
               _buildSocialMediaButtons(),
               const SizedBox(
@@ -45,11 +45,11 @@ class LoginPage extends StatelessWidget {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: 'Do not Have an account?',
+                  text: 'لا تملك حساب للان?',
                   style: TextStyle(color: Colors.black87),
                 ),
                 TextSpan(
-                  text: ' Sign Up',
+                  text: ' سجل معنا',
                   style: TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
@@ -80,12 +80,14 @@ class LoginPage extends StatelessWidget {
   Form _buildForm() {
     return Form(
         child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        InputFieldWidget(hintText: 'Email Address'),
+        InputFieldWidget(hintText: 'عنوان الايميل'),
         const SizedBox(
           height: 20,
         ),
-        InputFieldWidget(hintText: 'Password'),
+        InputFieldWidget(hintText: 'الرمز السري'),
         const SizedBox(
           height: 20,
         ),
@@ -100,9 +102,10 @@ class LoginPage extends StatelessWidget {
           height: 163,
         ),
         Align(
-          alignment: Alignment.bottomLeft,
+          alignment: Alignment.centerRight,
           child: Text(
-            'Login\nInto your account',
+            textAlign: TextAlign.right,
+            'سجل الدخول\nالى حسابك الشخصي',
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
         ),

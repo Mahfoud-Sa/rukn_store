@@ -9,14 +9,14 @@ class OnbordingPage extends StatefulWidget {
   OnbordingPage({super.key});
   final pageController = PageController(viewportFraction: 0.8);
   final List<String> titles = [
-    'Discover something new',
-    'Update trendy outfit',
-    'Explorer your truth style'
+    'ابدا باستكشاف شي جديد',
+    'قم بمواكبه العصر',
+    'جد المظهر المناسب لك'
   ];
   final List<String> subTitle = [
-    'Special new arrivals just for you',
-    'Favorite brands and hostest trends',
-    'Relax and letus bring the style to you'
+    'يخصص لك مجموعه خاصه لاشياء الجديدة',
+    'اشهر الماركات المعاصره متوافره',
+    'استكشف الكثير من الاقسام الخاصه بالملابس'
   ];
   @override
   State<OnbordingPage> createState() => _OnbordingPageState();
@@ -58,7 +58,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
               onTap: () {
                 context.go('/Login');
               },
-              text: 'Shopping now',
+              text: 'تسوق الان',
             ),
           ],
         ),

@@ -13,6 +13,7 @@ class OnbordingWidget extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(path),
+          fit: BoxFit.fill,
         ),
       ),
     );
