@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rukn_store/app/features/Auth/presentation/pages/forget_password_page.dart';
 import 'package:rukn_store/app/features/Auth/presentation/pages/login_page.dart';
+import 'package:rukn_store/app/features/home/presentation/pages/homepage.dart';
 import 'package:rukn_store/app/features/onbording/presentation/pages/onbording_page.dart';
 import 'package:rukn_store/app/features/onbording/presentation/pages/welcome_page.dart';
 import 'package:go_router/go_router.dart';
@@ -34,6 +35,12 @@ final GoRouter _router = GoRouter(
           path: 'ForgetPassword',
           builder: (BuildContext context, GoRouterState state) {
             return const ForgetPasswordPage();
+          },
+        ),
+        GoRoute(
+          path: 'HomePage',
+          builder: (BuildContext context, GoRouterState state) {
+            return const HomePage();
           },
         ),
       ],

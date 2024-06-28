@@ -24,12 +24,14 @@ class LoginPage extends StatelessWidget {
                       onTap: () {
                         context.go('/ForgetPassword');
                       },
-                      child: const Text('نسيت كلمة المرور?'))),
+                      child: const Text('نسيت كلمة المرور؟'))),
               const SizedBox(
                 height: 40,
               ),
               AuthButton(
-                onTap: () {},
+                onTap: () {
+                  context.go('/HomePage');
+                },
                 text: 'سجل الدخول',
               ),
               const Padding(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rukn_store/app/features/Auth/presentation/widgets/input_field_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class ForgetPasswordPage extends StatelessWidget {
   const ForgetPasswordPage({super.key});
@@ -19,14 +20,16 @@ class ForgetPasswordPage extends StatelessWidget {
               Align(
                   alignment: Alignment.bottomLeft,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      context.go('/Login');
+                    },
                     child: Container(
                       height: 35,
                       width: 35,
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage("assets/SVGs/apple_icon.png"),
+                            image: AssetImage("assets/SVGs/back_arrow.png"),
                             fit: BoxFit.cover,
                           ),
                           color: Colors.white,
@@ -35,9 +38,11 @@ class ForgetPasswordPage extends StatelessWidget {
                   )),
               _buildTitle(),
               const Text(
-                  'Enter email associated with your account and well send and email with intructors to reset your password'),
+                  textAlign: TextAlign.end,
+                  'ادخل عنوان البريد الالكتروني المرتبط بحسابك الشخصي وسوف نرسل ايميل اعاده ضبط كلمه السر'),
               InputFieldWidget(
-                  icon: Icons.email_outlined, hintText: 'enter your email here')
+                  icon: Icons.email_outlined,
+                  hintText: 'قم بادخال ايميلك الشخصي هنا')
             ],
           ),
         ),
@@ -52,9 +57,10 @@ class ForgetPasswordPage extends StatelessWidget {
           height: 103,
         ),
         Align(
-          alignment: Alignment.bottomLeft,
+          alignment: Alignment.centerRight,
           child: Text(
-            'Forget password?',
+            textAlign: TextAlign.end,
+            'نسيت كلمة المرور؟',
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
         ),
