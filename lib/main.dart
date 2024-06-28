@@ -40,7 +40,7 @@ final GoRouter _router = GoRouter(
         GoRoute(
           path: 'HomePage',
           builder: (BuildContext context, GoRouterState state) {
-            return const HomePage();
+            return HomePage();
           },
         ),
       ],
