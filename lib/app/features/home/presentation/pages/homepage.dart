@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:developer';
+
 import 'dart:ui';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,16 +19,50 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final dio = Dio();
+  String selectedCategoryoes = 'all';
+  Future<List<dynamic>> getItems(name) async {
+    switch (name) {
+      case 'electronics':
+        var response = await dio
+            .get('https://fakestoreapi.com/products/category/electronics');
+        print(response);
+        final products =
+            response.data.map((json) => Product.fromJson(json)).toList();
+        return products;
+      case 'jewelery':
+        var response = await dio
+            .get('https://fakestoreapi.com/products/category/jewelery');
+        print(response);
+        final products =
+            response.data.map((json) => Product.fromJson(json)).toList();
+        return products;
+      case 'men\'s clothing':
+        var response = await dio
+            .get('https://fakestoreapi.com/products/category/men\'s clothing');
+        print(response);
+        final products =
+            response.data.map((json) => Product.fromJson(json)).toList();
+        return products;
+      case 'women\'s clothing':
+        var response = await dio.get(
+            'https://fakestoreapi.com/products/category/women\'s clothing');
+        print(response);
+        final products =
+            response.data.map((json) => Product.fromJson(json)).toList();
+        return products;
 
-  Future<List<dynamic>> getHttp() async {
-    var response = await dio.get('https://fakestoreapi.com/products/');
-    print(response);
+      default:
+        var response = await dio.get('https://fakestoreapi.com/products/');
+        print(response);
+        final products =
+            response.data.map((json) => Product.fromJson(json)).toList();
+        return products;
+    }
+
     //print(Product.fromJson(response.data!.first).price);
-    final products =
-        response.data.map((json) => Product.fromJson(json)).toList();
 
-    print(products);
-    return products;
+    // print(products);
+    // return products;
   }
 
   @override
@@ -49,31 +84,71 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
+                  borderRadius: BorderRadius.circular(50),
                   onTap: () {
-                    setState(() {});
+                    setState(() {
+                      selectedCategoryoes = 'all';
+                    });
                   },
-                  child: CategoryBtn(
-                    icon: Icons.woman,
+                  child: CategoryWidget(
+                    icon: Icons.all_inbox,
+                    clicked: selectedCategoryoes == 'all',
                   ),
                 ),
-                CategoryBtn(
-                  icon: Icons.man,
+                InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: () {
+                    setState(() {
+                      selectedCategoryoes = 'electronics';
+                    });
+                  },
+                  child: CategoryWidget(
+                    icon: Icons.mobile_friendly,
+                    clicked: selectedCategoryoes == 'electronics',
+                  ),
                 ),
-                CategoryBtn(
-                  icon: Icons.abc_sharp,
+                InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: () {
+                    setState(() {
+                      selectedCategoryoes = 'jewelery';
+                    });
+                  },
+                  child: CategoryWidget(
+                    icon: Icons.volunteer_activism,
+                    clicked: selectedCategoryoes == 'jewelery',
+                  ),
                 ),
-                CategoryBtn(
-                  icon: Icons.join_full_outlined,
+                InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: () {
+                    setState(() {
+                      selectedCategoryoes = 'men\'s clothing';
+                    });
+                  },
+                  child: CategoryWidget(
+                    icon: Icons.man_4_sharp,
+                    clicked: selectedCategoryoes == 'men\'s clothing',
+                  ),
                 ),
-                CategoryBtn(
-                  icon: Icons.electric_bike,
+                InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: () {
+                    setState(() {
+                      selectedCategoryoes = 'women\'s clothing';
+                    });
+                  },
+                  child: CategoryWidget(
+                    icon: Icons.woman_rounded,
+                    clicked: selectedCategoryoes == 'women\'s clothing',
+                  ),
                 ),
               ],
             ),
           ),
           //Items section
           FutureBuilder(
-            future: getHttp(),
+            future: getItems(selectedCategoryoes),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
@@ -86,11 +161,11 @@ class _HomePageState extends State<HomePage> {
                       return ItemWidget(
                         product: Product(
                           title: snapshot.data![index].title,
+                          price: snapshot.data![index].price,
                           description: snapshot.data![index].description,
-
                           category: snapshot.data![index].category,
                           image: snapshot.data![index].image,
-                          // //  rating: Rating(rate: 5, count: 30)
+                          //  rating: 'Rating(rate: 5, count: 30)'
                         ),
                       );
                     },
@@ -106,52 +181,87 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class CategoryBtn extends StatefulWidget {
+class CategoryWidget extends StatelessWidget {
   final icon;
+  final clicked;
 
-  CategoryBtn({
+  CategoryWidget({
     super.key,
     this.icon,
+    this.clicked = false,
   });
 
   @override
-  State<CategoryBtn> createState() => _CategoryBtnState();
-}
-
-class _CategoryBtnState extends State<CategoryBtn> {
-  bool clicked = false;
-  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(50),
-      onTap: () {
-        return setState(() {
-          clicked = !clicked;
-        });
-      },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.all(5),
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              color: clicked ? Colors.black45 : Colors.black12,
-              borderRadius: BorderRadius.circular(50),
-            ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.all(5),
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: clicked ? Colors.black45 : Colors.black12,
+            borderRadius: BorderRadius.circular(50),
           ),
-          clicked
-              ? Icon(widget.icon, color: Colors.white)
-              : Icon(
-                  widget.icon,
-                  color: Colors.black,
-                ),
-        ],
-      ),
+        ),
+        clicked
+            ? Icon(icon, color: Colors.white)
+            : Icon(
+                icon,
+                color: Colors.black,
+              ),
+      ],
     );
   }
 }
+
+// class CategoryBtn extends StatefulWidget {
+//   final icon;
+//   final ckicked;
+
+//   CategoryBtn({
+//     super.key,
+//     this.icon,
+//     this.ckicked,
+//   });
+
+//   @override
+//   State<CategoryBtn> createState() => _CategoryBtnState();
+// }
+
+// class _CategoryBtnState extends State<CategoryBtn> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return InkWell(
+//       // onTap: () {
+//       //   return setState(() {
+//       //     clicked = !clicked;
+//       //   });
+//       // },
+//       child: Stack(
+//         alignment: Alignment.center,
+//         children: [
+//           Container(
+//             margin: const EdgeInsets.all(5),
+//             height: 50,
+//             width: 50,
+//             decoration: BoxDecoration(
+//               color: clicked ? Colors.black45 : Colors.black12,
+//               borderRadius: BorderRadius.circular(50),
+//             ),
+//           ),
+//           clicked
+//               ? Icon(widget.icon, color: Colors.white)
+//               : Icon(
+//                   widget.icon,
+//                   color: Colors.black,
+//                 ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class ItemWidget extends StatelessWidget {
   ItemWidget({
@@ -195,7 +305,7 @@ class ItemWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text("Price: 250.4 \$"),
+                    Text("Price: ${product.price!}\$"),
                     Text("product.rating!.rate.toString()"),
                   ],
                 ),
