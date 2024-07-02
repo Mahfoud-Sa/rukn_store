@@ -22,13 +22,10 @@ class _HomePageState extends State<HomePage> {
   Future<List<dynamic>> getHttp() async {
     var response = await dio.get('https://fakestoreapi.com/products/');
     print(response);
-
+    //print(Product.fromJson(response.data!.first).price);
     final products =
         response.data.map((json) => Product.fromJson(json)).toList();
-    // response
-    //     .toString()
-    //     .substring(1, response.toString().length - 1)
-    //     .split(',');
+
     print(products);
     return products;
   }
@@ -53,9 +50,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 InkWell(
                   onTap: () {
-                    setState(() {
-                      print('object');
-                    });
+                    setState(() {});
                   },
                   child: CategoryBtn(
                     icon: Icons.woman,
@@ -86,16 +81,15 @@ class _HomePageState extends State<HomePage> {
                 }
                 return Expanded(
                   child: ListView.builder(
-                    itemCount: 10,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       return ItemWidget(
                         product: Product(
-                          title: 'Fits 15 Lapds Expanded ',
-                          // price: 250,
-                          // description: "padded sleeve,",
-                          // category: 'Men close',
-                          // image:
-                          //     "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+                          title: snapshot.data![index].title,
+                          description: snapshot.data![index].description,
+
+                          category: snapshot.data![index].category,
+                          image: snapshot.data![index].image,
                           // //  rating: Rating(rate: 5, count: 30)
                         ),
                       );
@@ -167,37 +161,55 @@ class ItemWidget extends StatelessWidget {
   final Product product;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      height: 200,
-      color: const Color.fromARGB(255, 236, 236, 236),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                product.title!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+    return InkWell(
+      onTap: () {
+        context.go('/ProductDetailesPage', extra: product);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        height: 200,
+        width: MediaQuery.of(context).size.width,
+        color: const Color.fromARGB(255, 236, 236, 236),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.title!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      overflow: TextOverflow.ellipsis,
+                      product.category!,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text("Price: 250.4 \$"),
+                    Text("product.rating!.rate.toString()"),
+                  ],
+                ),
               ),
-              Text(
-                "product.description!",
-                maxLines: 2,
-              ),
-              Text("product.price!.toString()"),
-              Text("product.rating!.rate.toString()"),
-            ],
-          ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            padding: const EdgeInsets.all(15),
-            //  margin: EdgeInsets.all(3),
-            // child: Image.network(product.image!)
-          ),
-        ],
+            ),
+            Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
+                padding: const EdgeInsets.all(15),
+                //  margin: EdgeInsets.all(3),
+                child: Image.network(product.image!)),
+          ],
+        ),
       ),
     );
   }
