@@ -48,7 +48,7 @@ final GoRouter _router = GoRouter(
         GoRoute(
           path: 'ProductDetailesPage',
           builder: (BuildContext context, GoRouterState state) {
-            return ProductDetailesPage(
+            return ProductDetailsPage(
               product: state.extra as Product,
             );
           },

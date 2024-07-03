@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 class Product {
@@ -22,7 +23,7 @@ class Product {
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
-    price = 250.9;
+    price = json['price'].toDouble();
     description = json['description'];
     category = json['category'];
     image = json['image'];

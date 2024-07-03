@@ -3,90 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rukn_store/app/features/home/data/modules/product.dart';
 
-class ProductDetailesPage extends StatefulWidget {
-  final Product product;
-  const ProductDetailesPage({super.key, required this.product});
-
-  @override
-  State<ProductDetailesPage> createState() => _ProductDetailesPageState();
-}
-
-class _ProductDetailesPageState extends State<ProductDetailesPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        // fit: StackFit.loose,
-        children: [
-          Image.network(widget.product.image!),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              height: 450, //MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(50)),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 25.0, left: 15, right: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      widget.product.title!,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Text(
-                      "Price: 2500\$",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    ExpansionTile(
-                      title: const Text(
-                        'Description',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      children: [
-                        Text(
-                          widget.product.description!,
-                          //   overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    // RatingStarsWidget(
-                    //   rating: widget.product.rating!,
-                    // ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class RatingStarsWidget extends StatelessWidget {
   final Rating rating;
 
@@ -113,6 +29,56 @@ class RatingStarsWidget extends StatelessWidget {
           style: TextStyle(fontSize: 14, color: Colors.grey),
         ),
       ],
+    );
+  }
+}
+
+class ProductDetailsPage extends StatelessWidget {
+  final Product product;
+
+  ProductDetailsPage({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(product.title!),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Image.network(product.image!),
+              SizedBox(height: 20),
+              Text(
+                product.title!,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Text(product.description!),
+              SizedBox(height: 20),
+              Text(
+                '\$${product.price}',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue),
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  for (int i = 0; i < 5; i++)
+                    Icon(Icons.star, color: Colors.yellow),
+                  for (int i = 0; i < 5 - 2; i++)
+                    Icon(Icons.star_border, color: Colors.grey),
+                  Text(' (_product.rating/5)'),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
