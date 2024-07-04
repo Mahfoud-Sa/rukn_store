@@ -8,17 +8,16 @@ class Product {
   String? description;
   String? category;
   String? image;
-  // String? rating;
+  Rating? rating;
 
-  Product({
-    this.id,
-    this.title,
-    this.price,
-    this.description,
-    this.category,
-    this.image,
-    //this.rating
-  });
+  Product(
+      {this.id,
+      this.title,
+      this.price,
+      this.description,
+      this.category,
+      this.image,
+      this.rating});
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -27,7 +26,9 @@ class Product {
     description = json['description'];
     category = json['category'];
     image = json['image'];
-    // rating = json['rating'] as String;
+    rating = json['rating'] != null
+        ? Rating.fromJson(json['rating'])
+        : Rating(rate: 0, count: 0);
   }
 
   Map<String, dynamic> toJson() {
@@ -44,11 +45,15 @@ class Product {
 }
 
 class Rating {
-  final double? rate;
-  final int? count;
+  final double rate;
+  final int count;
 
-  const Rating({this.rate, this.count});
+  Rating({required this.rate, required this.count});
 
-  factory Rating.fromJson(Map<String, String> json) =>
-      Rating(count: json['count'] as int, rate: json['rate'] as double);
+  factory Rating.fromJson(Map<String, dynamic> json) {
+    return Rating(
+      rate: json['rate'].toDouble(),
+      count: json['count'],
+    );
+  }
 }

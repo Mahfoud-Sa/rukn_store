@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dio/dio.dart';
 import 'package:rukn_store/app/features/home/data/modules/product.dart';
+import 'package:rukn_store/app/features/home/presentation/pages/product_detailes_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -80,8 +81,9 @@ class _HomePageState extends State<HomePage> {
           //category Section
           SizedBox(
             height: 120,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
                   borderRadius: BorderRadius.circular(50),
@@ -91,7 +93,8 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                   child: CategoryWidget(
-                    icon: Icons.all_inbox,
+                    name: 'all',
+                    icon: Icons.filter_list,
                     clicked: selectedCategoryoes == 'all',
                   ),
                 ),
@@ -103,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                   child: CategoryWidget(
+                    name: 'electronics',
                     icon: Icons.mobile_friendly,
                     clicked: selectedCategoryoes == 'electronics',
                   ),
@@ -115,6 +119,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                   child: CategoryWidget(
+                    name: 'jewelery',
                     icon: Icons.volunteer_activism,
                     clicked: selectedCategoryoes == 'jewelery',
                   ),
@@ -127,6 +132,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                   child: CategoryWidget(
+                    name: 'men\'s clothing',
                     icon: Icons.man_4_sharp,
                     clicked: selectedCategoryoes == 'men\'s clothing',
                   ),
@@ -139,6 +145,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                   child: CategoryWidget(
+                    name: 'women\'s clothing',
                     icon: Icons.woman_rounded,
                     clicked: selectedCategoryoes == 'women\'s clothing',
                   ),
@@ -155,8 +162,11 @@ class _HomePageState extends State<HomePage> {
                   return const Center(child: Text('خطاء في الاتصال بالانترنت'));
                 }
                 return Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
                     itemCount: snapshot.data!.length,
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 10,
+                    ),
                     itemBuilder: (context, index) {
                       return ItemWidget(
                         product: Product(
@@ -165,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                           description: snapshot.data![index].description,
                           category: snapshot.data![index].category,
                           image: snapshot.data![index].image,
-                          //  rating: 'Rating(rate: 5, count: 30)'
+                          rating: snapshot.data![index].rating,
                         ),
                       );
                     },
@@ -184,34 +194,47 @@ class _HomePageState extends State<HomePage> {
 class CategoryWidget extends StatelessWidget {
   final icon;
   final clicked;
-
+  final name;
   CategoryWidget({
     super.key,
     this.icon,
+    this.name,
     this.clicked = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          margin: const EdgeInsets.all(5),
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            color: clicked ? Colors.black45 : Colors.black12,
-            borderRadius: BorderRadius.circular(50),
-          ),
-        ),
-        clicked
-            ? Icon(icon, color: Colors.white)
-            : Icon(
-                icon,
-                color: Colors.black,
+    return SizedBox(
+      width: 120,
+      child: Column(
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.all(5),
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: clicked ? Colors.black45 : Colors.black12,
+                  borderRadius: BorderRadius.circular(50),
+                ),
               ),
-      ],
+              clicked
+                  ? Icon(icon, color: Colors.white)
+                  : Icon(
+                      icon,
+                      color: Colors.black,
+                    ),
+            ],
+          ),
+          Text(
+            name,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          )
+        ],
+      ),
     );
   }
 }
@@ -306,18 +329,23 @@ class ItemWidget extends StatelessWidget {
                       ),
                     ),
                     Text("Price: ${product.price!}\$"),
-                    Text("product.rating!.rate.toString()"),
+                    RatingStarsWidget(
+                      rating: product.rating!,
+                    )
                   ],
                 ),
               ),
             ),
             Container(
+                constraints: BoxConstraints(minWidth: 50, maxWidth: 200),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20)),
                 padding: const EdgeInsets.all(15),
                 //  margin: EdgeInsets.all(3),
-                child: Image.network(product.image!)),
+                child: Image.network(
+                  product.image!,
+                )),
           ],
         ),
       ),

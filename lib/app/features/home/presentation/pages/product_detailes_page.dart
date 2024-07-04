@@ -59,22 +59,16 @@ class ProductDetailsPage extends StatelessWidget {
               Text(product.description!),
               SizedBox(height: 20),
               Text(
-                '\$${product.price}',
+                'Price: \$${product.price}',
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue),
               ),
               SizedBox(height: 10),
-              Row(
-                children: [
-                  for (int i = 0; i < 5; i++)
-                    Icon(Icons.star, color: Colors.yellow),
-                  for (int i = 0; i < 5 - 2; i++)
-                    Icon(Icons.star_border, color: Colors.grey),
-                  Text(' (_product.rating/5)'),
-                ],
-              ),
+              RatingStarsWidget(
+                rating: product.rating!,
+              )
             ],
           ),
         ),
