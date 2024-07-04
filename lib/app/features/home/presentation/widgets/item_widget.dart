@@ -55,7 +55,7 @@ class ItemWidget extends StatelessWidget {
               ),
             ),
             Container(
-                constraints: const BoxConstraints(minWidth: 50, maxWidth: 200),
+                constraints: const BoxConstraints(minWidth: 50, maxWidth: 150),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20)),
