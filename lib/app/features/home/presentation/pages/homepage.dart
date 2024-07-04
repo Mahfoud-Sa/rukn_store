@@ -1,15 +1,9 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'dart:ui';
-import 'package:flutter_svg/svg.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
 import 'package:rukn_store/app/features/home/data/modules/product.dart';
-import 'package:rukn_store/app/features/home/presentation/pages/product_detailes_page.dart';
+import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rukn_store/app/features/home/presentation/widgets/category_widget.dart';
+import 'package:rukn_store/app/features/home/presentation/widgets/item_widget.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -20,6 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final dio = Dio();
+  //Default Selection
   String selectedCategoryoes = 'all';
   Future<List<dynamic>> getItems(name) async {
     switch (name) {
@@ -59,20 +54,15 @@ class _HomePageState extends State<HomePage> {
             response.data.map((json) => Product.fromJson(json)).toList();
         return products;
     }
-
-    //print(Product.fromJson(response.data!.first).price);
-
-    // print(products);
-    // return products;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
-          'Rukn Store',
+          'متجر ركن',
         ),
         centerTitle: true,
       ),
@@ -154,201 +144,46 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           //Items section
-          FutureBuilder(
-            future: getItems(selectedCategoryoes),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasError) {
-                  return const Center(child: Text('خطاء في الاتصال بالانترنت'));
-                }
-                return Expanded(
-                  child: ListView.separated(
-                    itemCount: snapshot.data!.length,
-                    separatorBuilder: (context, index) => SizedBox(
-                      height: 10,
-                    ),
-                    itemBuilder: (context, index) {
-                      return ItemWidget(
-                        product: Product(
-                          title: snapshot.data![index].title,
-                          price: snapshot.data![index].price,
-                          description: snapshot.data![index].description,
-                          category: snapshot.data![index].category,
-                          image: snapshot.data![index].image,
-                          rating: snapshot.data![index].rating,
-                        ),
-                      );
-                    },
+          itemsSection(),
+        ],
+      ),
+    );
+  }
+
+  FutureBuilder<List<dynamic>> itemsSection() {
+    return FutureBuilder(
+      future: getItems(selectedCategoryoes),
+      builder: (context, snapshot) {
+        //if call to api is done
+        if (snapshot.connectionState == ConnectionState.done) {
+          //if call to add done with Problems
+          if (snapshot.hasError) {
+            return const Center(child: Text('خطاء في الاتصال بالانترنت'));
+          }
+          // if call done succefully
+          return Expanded(
+            child: ListView.separated(
+              itemCount: snapshot.data!.length,
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 10,
+              ),
+              itemBuilder: (context, index) {
+                return ItemWidget(
+                  product: Product(
+                    title: snapshot.data![index].title,
+                    price: snapshot.data![index].price,
+                    description: snapshot.data![index].description,
+                    category: snapshot.data![index].category,
+                    image: snapshot.data![index].image,
+                    rating: snapshot.data![index].rating,
                   ),
                 );
-              }
-              return const Center(child: CircularProgressIndicator());
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CategoryWidget extends StatelessWidget {
-  final icon;
-  final clicked;
-  final name;
-  CategoryWidget({
-    super.key,
-    this.icon,
-    this.name,
-    this.clicked = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 120,
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(5),
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: clicked ? Colors.black45 : Colors.black12,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              ),
-              clicked
-                  ? Icon(icon, color: Colors.white)
-                  : Icon(
-                      icon,
-                      color: Colors.black,
-                    ),
-            ],
-          ),
-          Text(
-            name,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-// class CategoryBtn extends StatefulWidget {
-//   final icon;
-//   final ckicked;
-
-//   CategoryBtn({
-//     super.key,
-//     this.icon,
-//     this.ckicked,
-//   });
-
-//   @override
-//   State<CategoryBtn> createState() => _CategoryBtnState();
-// }
-
-// class _CategoryBtnState extends State<CategoryBtn> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       // onTap: () {
-//       //   return setState(() {
-//       //     clicked = !clicked;
-//       //   });
-//       // },
-//       child: Stack(
-//         alignment: Alignment.center,
-//         children: [
-//           Container(
-//             margin: const EdgeInsets.all(5),
-//             height: 50,
-//             width: 50,
-//             decoration: BoxDecoration(
-//               color: clicked ? Colors.black45 : Colors.black12,
-//               borderRadius: BorderRadius.circular(50),
-//             ),
-//           ),
-//           clicked
-//               ? Icon(widget.icon, color: Colors.white)
-//               : Icon(
-//                   widget.icon,
-//                   color: Colors.black,
-//                 ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-class ItemWidget extends StatelessWidget {
-  ItemWidget({
-    super.key,
-    required this.product,
-  });
-  final Product product;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        context.go('/ProductDetailesPage', extra: product);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        height: 200,
-        width: MediaQuery.of(context).size.width,
-        color: const Color.fromARGB(255, 236, 236, 236),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: SizedBox(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.title!,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      overflow: TextOverflow.ellipsis,
-                      product.category!,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text("Price: ${product.price!}\$"),
-                    RatingStarsWidget(
-                      rating: product.rating!,
-                    )
-                  ],
-                ),
-              ),
+              },
             ),
-            Container(
-                constraints: BoxConstraints(minWidth: 50, maxWidth: 200),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)),
-                padding: const EdgeInsets.all(15),
-                //  margin: EdgeInsets.all(3),
-                child: Image.network(
-                  product.image!,
-                )),
-          ],
-        ),
-      ),
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:rukn_store/app/features/home/data/modules/rating.dart';
+
 class Product {
   int? id;
   String? title;
@@ -41,19 +43,5 @@ class Product {
     data['image'] = this.image;
 
     return data;
-  }
-}
-
-class Rating {
-  final double rate;
-  final int count;
-
-  Rating({required this.rate, required this.count});
-
-  factory Rating.fromJson(Map<String, dynamic> json) {
-    return Rating(
-      rate: json['rate'].toDouble(),
-      count: json['count'],
-    );
   }
 }

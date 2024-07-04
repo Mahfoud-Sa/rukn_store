@@ -10,6 +10,7 @@ class OnbordingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 30),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(path),

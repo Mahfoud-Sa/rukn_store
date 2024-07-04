@@ -5,8 +5,8 @@ import 'package:rukn_store/app/features/home/data/modules/product.dart';
 import 'package:rukn_store/app/features/home/presentation/pages/homepage.dart';
 import 'package:rukn_store/app/features/home/presentation/pages/product_detailes_page.dart';
 import 'package:rukn_store/app/features/onbording/presentation/pages/onbording_page.dart';
-import 'package:rukn_store/app/features/onbording/presentation/pages/welcome_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rukn_store/app/features/onbording/presentation/pages/welcome_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return HomePage();
+        return WelcomePage();
       },
       routes: <RouteBase>[
         GoRoute(
